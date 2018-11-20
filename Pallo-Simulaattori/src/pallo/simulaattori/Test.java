@@ -10,5 +10,5 @@ package pallo.simulaattori;
  * @author Lappari
  */
 public class Test {
-    
+    int paska;
 }
