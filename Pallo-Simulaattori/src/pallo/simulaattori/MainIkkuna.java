@@ -190,25 +190,26 @@ public class MainIkkuna extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-            public void PiirraPallo(int x, int y, int xNop, int yNop){
+            protected void PiirraPallo(int x, int y, int xNop, int yNop, Graphics og){
                 
                 int KordiX = x, KordiY = y, xVauhti = xNop, yVauhti = yNop, i = 0;
-                int[] kordinaatit = {KordiX,KordiY};
+                int[] kordinaatit = {KordiX,KordiY,xVauhti,yVauhti};
                 
                 
-                
-                Ellipse2D circle = new Ellipse2D.Double(KordiX,KordiY,20,20);
+               
+                Ellipse2D circle = new Ellipse2D.Double(kordinaatit[0],kordinaatit[1],20,20);
                 Graphics2D gfx = (Graphics2D)jPanel1.getGraphics();
                 gfx.fill(circle);
                 
                
                         ;
-                while(i!=1000){
-                    kordinaatit = liiku(kordinaatit,xVauhti,yVauhti);
+                while(i!=500){
+                    kordinaatit = liiku(kordinaatit);
+                    KordiX=kordinaatit[0];
+                    KordiY=kordinaatit[1];
                     
-//pallo.repaint();
                     i++;
-                  System.out.println(i+" "+kordinaatit[0]+" "+kordinaatit[1]);
+                  System.out.println(i+" "+kordinaatit[0]+" "+kordinaatit[1]+" "+kordinaatit[2]+" "+kordinaatit[3]);
                   try{
                   Thread.sleep(10);
                 }catch (InterruptedException ex) {
@@ -219,10 +220,10 @@ public class MainIkkuna extends javax.swing.JFrame {
                 
             }
             
-            int[] liiku(int[] uudetKordinaatit, int xNop, int yNop){
+            int[] liiku(int[] uudetKordinaatit){
             
-            int[] kordinaatit = uudetKordinaatit;
-            int KordiX = kordinaatit[0], KordiY = kordinaatit[1], xVauhti = xNop, yVauhti = yNop;
+            
+            int KordiX = uudetKordinaatit[0], KordiY = uudetKordinaatit[1], xVauhti = uudetKordinaatit[2], yVauhti = uudetKordinaatit[3];
             
             if (KordiX < 0 || KordiX > 822){
             xVauhti = -xVauhti;
@@ -233,6 +234,7 @@ public class MainIkkuna extends javax.swing.JFrame {
 
             KordiX += xVauhti;
             KordiY += yVauhti;
+            int[] kordinaatit = {KordiX,KordiY,xVauhti,yVauhti};
             repaint();
             
             
