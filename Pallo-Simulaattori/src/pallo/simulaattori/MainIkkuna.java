@@ -190,7 +190,7 @@ public class MainIkkuna extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-            protected void PiirraPallo(int x, int y, int xNop, int yNop, Graphics og){
+            protected void PiirraPallo(int x, int y, int xNop, int yNop){
                 
                 int KordiX = x, KordiY = y, xVauhti = xNop, yVauhti = yNop, i = 0;
                 int[] kordinaatit = {KordiX,KordiY,xVauhti,yVauhti};
