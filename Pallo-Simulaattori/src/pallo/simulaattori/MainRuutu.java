@@ -4,27 +4,29 @@
  * and open the template in the editor.
  */
 package pallo.simulaattori;
-import java.awt.*;
 import javax.swing.*;
 /**
  *
  * @author Lappari
  */
 public class MainRuutu extends JFrame{
+    
     private JFrame ikkuna;
-    public static JPanel simu;
+    private JPanel simu;
+    
     
     public MainRuutu(){
     ikkuna = new JFrame();
     setTitle("Pallo-Simulaattori");
     setSize(1024, 512);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setLayout(null);
     
     simu = new JPanel();
-    setLayout(null);
+    simu.setLayout(null);
     simu.setBackground(new java.awt.Color(255, 255, 255));
     simu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    Dimension simu_koko = simu.getPreferredSize();
+    //Dimension simu_koko = simu.getPreferredSize();
     simu.setBounds(200,10,799,454);
 //simu.setSize(800, 400);
     
@@ -34,5 +36,14 @@ public class MainRuutu extends JFrame{
 
     }
     
+   public void lisaaPallo(int x, int y, int nopx,int nopy){
+       piirrapallo pallo = new piirrapallo(x,y,nopx,nopy);
+       pallo.setBounds(0,0,799,454);
+       pallo.setOpaque(false);
+       simu.add(pallo);
+       
+
+   }
    
-}
+   }
+
