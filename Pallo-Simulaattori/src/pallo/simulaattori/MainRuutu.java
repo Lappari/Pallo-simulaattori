@@ -45,7 +45,7 @@ public class MainRuutu extends JFrame implements ActionListener{
     xkord.setBounds(10, 10, 100, 25);
     
     //x kordinaatti text field
-    xkordarv = new JTextField();
+    xkordarv = new JTextField("0");
     xkordarv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     xkordarv.setBounds(108, 10, 82, 25);
     
@@ -55,7 +55,7 @@ public class MainRuutu extends JFrame implements ActionListener{
     ykord.setBounds(10, 35, 100, 25);
     
     //y kordinaatti text field
-    ykordarv = new JTextField();
+    ykordarv = new JTextField("0");
     ykordarv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     ykordarv.setBounds(108, 35, 82, 25);
     
@@ -65,7 +65,7 @@ public class MainRuutu extends JFrame implements ActionListener{
     xkordnopeus.setBounds(10, 60, 100, 25);
     
     //X suuntanopeus textfield
-    xkordnoparv = new JTextField();
+    xkordnoparv = new JTextField("5");
     xkordnoparv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     xkordnoparv.setBounds(108, 60, 82, 25);
     
@@ -75,11 +75,12 @@ public class MainRuutu extends JFrame implements ActionListener{
     ykordnopeus.setBounds(10, 85, 100, 25);
     
     //Y suuntanopeus textfield
-    ykordnoparv = new JTextField();
+    ykordnoparv = new JTextField("5");
     ykordnoparv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     ykordnoparv.setBounds(108, 85, 82, 25);
     
     lisaaPallo = new JButton("Lisää");
+    lisaaPallo.addActionListener(this);
     lisaaPallo.setBounds(120,437,70,25);
     
     add(xkordarv);
@@ -97,8 +98,20 @@ public class MainRuutu extends JFrame implements ActionListener{
     }
    
     //lisää pallon simulaatio JPaneeliin.
-   public void uusiPallo(int x, int y, int nopx,int nopy){
-       piirrapallo pallo = new piirrapallo(x,y,nopx,nopy);
+   public void uusiPallo(){
+       
+       int xKordi,yKordi,Xvauhti,Yvauhti;
+        
+       //Hakee kordinaatit tekstikentistä.
+       xKordi = Integer.parseInt(xkordarv.getText());
+       yKordi = Integer.parseInt(ykordarv.getText());
+        
+        //Hakee nopeudet tekstikentistä.
+       Xvauhti = Integer.parseInt(xkordnoparv.getText());
+       Yvauhti = Integer.parseInt(ykordnoparv.getText());
+       
+       piirrapallo pallo = new piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti);
+       
        pallo.setBounds(0,0,799,454);
        pallo.setOpaque(false);
        simu.add(pallo);
@@ -106,21 +119,27 @@ public class MainRuutu extends JFrame implements ActionListener{
 
    }
    
-   public void actionPerformed(ActionEvent e){
+    
+    public void actionPerformed(ActionEvent e){
        if(e.getSource() == lisaaPallo){
-        int xKordi,yKordi,Xvauhti,Yvauhti;
+
+       int xKordi,yKordi,Xvauhti,Yvauhti;
         
-        //Hakee kordinaatit tekstikentistä.
-        xKordi = Integer.parseInt(xkordarv.getText());
-        yKordi = Integer.parseInt(ykordarv.getText());
+       //Hakee kordinaatit tekstikentistä.
+       xKordi = Integer.parseInt(xkordarv.getText());
+       yKordi = Integer.parseInt(ykordarv.getText());
         
-        //Hakee nopeudet tekstikentistä.
-        Xvauhti = Integer.parseInt(xkordnoparv.getText());
-        Yvauhti = Integer.parseInt(ykordnoparv.getText());
+       //Hakee nopeudet tekstikentistä.
+       Xvauhti = Integer.parseInt(xkordnoparv.getText());
+       Yvauhti = Integer.parseInt(ykordnoparv.getText());
+       
+       piirrapallo pallo = new piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti);
+       
+       pallo.setBounds(0,0,799,454);
+       pallo.setOpaque(false);
+       simu.add(pallo);
         
-        //lisää pallon simulaatio paneeliin.
-        uusiPallo(xKordi,yKordi,Xvauhti,Yvauhti);
-           
+       
        }
    }
    
