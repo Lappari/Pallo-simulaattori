@@ -19,8 +19,20 @@ public class PalloSimulaattori {
         MainRuutu ikkuna = new MainRuutu();
         ikkuna.setVisible(true);
         
-
-   
+        ikkuna.uusiPallo();
+        
+        
+     /* int i = 0;
+        while(i!=5000){
+            pallo.move();
+            //pallo.repaint();
+            i++;
+            System.out.println(i);
+            
+        }*/
+        
+       // MainIkkuna ikkuna = new MainIkkuna();
+        //ikkuna.setVisible(true);
     }
     
 }
