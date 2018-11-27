@@ -19,28 +19,8 @@ public class PalloSimulaattori {
         MainRuutu ikkuna = new MainRuutu();
         ikkuna.setVisible(true);
         
-        ikkuna.lisaaPallo(10,10,3,3);
-        
-        ikkuna.lisaaPallo(20,20,1,10);
-        
-        ikkuna.lisaaPallo(20,20,10,10);
-        
-        ikkuna.lisaaPallo(20,20,6,6);
-        
-        ikkuna.lisaaPallo(20,20,7,4);
-        
-        ikkuna.lisaaPallo(20,20,3,6);
-     /* int i = 0;
-        while(i!=5000){
-            pallo.move();
-            //pallo.repaint();
-            i++;
-            System.out.println(i);
-            
-        }*/
-        
-       // MainIkkuna ikkuna = new MainIkkuna();
-        //ikkuna.setVisible(true);
+
+   
     }
     
 }
