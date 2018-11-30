@@ -122,28 +122,34 @@ public class MainRuutu extends JFrame implements ActionListener{
        Xvauhti = Integer.parseInt(xkordnoparv.getText());
        Yvauhti = Integer.parseInt(ykordnoparv.getText());
        
+       //lähetätään kontrollerille pallon parametrit joka luo uuden pallon piirräpalllo oliolla
        ohjain.piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti); 
        
        
     }
    
+   //actionPerformer napeille lisää ja tyhjennä
     public void actionPerformed(ActionEvent e){
        if(e.getSource() == lisaaPallo){
           
+           //kutsuu uusipallo funktion joka lähettää tarvittavat tiedot kontrollerille
            uusiPallo();
            
         }
         if(e.getSource() == tyhjenna){
             
-           
+           //tyhjentää simulaattori ikkunan
            simu.removeAll();
            simu.updateUI();
+           
+           //lähettää kontrollerille komennon tyhjentää kontrollerin arraylistin
            ohjain.poistaPallot();
            
         }
     }
     
     public void kontroller(PalloSimulaattori ohjain){
+        //esitellään kontrolleri pääikkunalle
         this.ohjain = ohjain;
     }
     
