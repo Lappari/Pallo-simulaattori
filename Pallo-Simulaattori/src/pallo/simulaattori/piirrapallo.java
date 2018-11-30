@@ -19,6 +19,8 @@ public class piirrapallo extends JPanel{
   
     //Pallon tiedot
         private int x = 0, y = 0, kulmaX = 5, kulmaY = 5 ;
+        
+    //arvotaan pallon väri    
         Random color = new Random();
         private float red = color.nextFloat();
         private float green = color.nextFloat();
@@ -27,16 +29,21 @@ public class piirrapallo extends JPanel{
         
     public piirrapallo(int uusx, int uusy, int xnopeus, int ynopeus){
         
+        //piirräpallo muuttuja arvojen alustus
         x = uusx;
         y = uusy;
         kulmaX = xnopeus;
         kulmaY = ynopeus;
+        
+        //asetetaan ikkunan jossa pallo voiliikkua rajat
         setBounds(0,0,799,454);
+        
+        //tehdään ylimääräisistä pikseleistä läpinäkyviä
         setOpaque(false);
         
     }
    
-
+    //pallon piirto
     @Override
     public void paint(Graphics g) {
  
@@ -48,17 +55,23 @@ public class piirrapallo extends JPanel{
         
     
     }
-    
+    //pallon liikkumis metodi
     public void paivita(){
+        //tarkistetaan onko pallo kiinni seinässä x akselin suuntaan
         if (x < 0 || x > 779){
         kulmaX = -kulmaX;
         }
+        
+        //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
         if(y < 0 || y > 434){
         kulmaY = -kulmaY;
         }
-
+        
+        //liikutetaan palloa
         x += kulmaX;
         y += kulmaY;
+        
+        //päivitetään pallon uusi sijainti ruudulla
         repaint();
     }
     }
