@@ -6,26 +6,31 @@
 package pallo.simulaattori;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 /**
  *
  * @author Lappari
  */
 public class MainRuutu extends JFrame implements ActionListener{
-    
-    private JFrame ikkuna;
-    private JPanel simu;
-    private JLabel xkord;
-    private JTextField xkordarv;
-    private JLabel ykord;
-    private JTextField ykordarv;
-    private JLabel xkordnopeus;
-    private JTextField xkordnoparv;
-    private JLabel ykordnopeus;
-    private JTextField ykordnoparv;
-    private JButton lisaaPallo;
+   
+    private PalloSimulaattori ohjain;
+    private final JFrame ikkuna;
+    public final JPanel simu;
+    private final JLabel xkord;
+    private final JTextField xkordarv;
+    private final JLabel ykord;
+    private final JTextField ykordarv;
+    private final JLabel xkordnopeus;
+    private final JTextField xkordnoparv;
+    private final JLabel ykordnopeus;
+    private final JTextField ykordnoparv;
+    private final JButton lisaaPallo;
+    private final JButton tyhjenna;
     
     
     public MainRuutu(){
+        
     ikkuna = new JFrame();
     setTitle("Pallo-Simulaattori");
     setSize(1024, 512);
@@ -79,10 +84,17 @@ public class MainRuutu extends JFrame implements ActionListener{
     ykordnoparv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     ykordnoparv.setBounds(108, 85, 82, 25);
     
+    //lisää painike
     lisaaPallo = new JButton("Lisää");
     lisaaPallo.addActionListener(this);
     lisaaPallo.setBounds(120,437,70,25);
     
+    //tyhjennys painike
+    tyhjenna = new JButton("Poista");
+    tyhjenna.addActionListener(this);
+    tyhjenna.setBounds(50,437,70,25);
+    
+    add(simu);
     add(xkordarv);
     add(xkord);
     add(ykordarv);
@@ -92,10 +104,10 @@ public class MainRuutu extends JFrame implements ActionListener{
     add(ykordnopeus);
     add(ykordnoparv);
     add(lisaaPallo);
-    add(simu);
+    add(tyhjenna);
     
-
-    }
+    
+   }
    
     //lisää pallon simulaatio JPaneeliin.
    public void uusiPallo(){
@@ -110,39 +122,30 @@ public class MainRuutu extends JFrame implements ActionListener{
        Xvauhti = Integer.parseInt(xkordnoparv.getText());
        Yvauhti = Integer.parseInt(ykordnoparv.getText());
        
-       piirrapallo pallo = new piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti);
+       ohjain.piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti); 
        
-       pallo.setBounds(0,0,799,454);
-       pallo.setOpaque(false);
-       simu.add(pallo);
        
-
-   }
+    }
    
-    
     public void actionPerformed(ActionEvent e){
        if(e.getSource() == lisaaPallo){
-
-       int xKordi,yKordi,Xvauhti,Yvauhti;
-        
-       //Hakee kordinaatit tekstikentistä.
-       xKordi = Integer.parseInt(xkordarv.getText());
-       yKordi = Integer.parseInt(ykordarv.getText());
-        
-       //Hakee nopeudet tekstikentistä.
-       Xvauhti = Integer.parseInt(xkordnoparv.getText());
-       Yvauhti = Integer.parseInt(ykordnoparv.getText());
-       
-       piirrapallo pallo = new piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti);
-       
-       pallo.setBounds(0,0,799,454);
-       pallo.setOpaque(false);
-       simu.add(pallo);
-        
-       
-       }
-   }
-   
-   
+          
+           uusiPallo();
+           
+        }
+        if(e.getSource() == tyhjenna){
+            
+           
+           simu.removeAll();
+           simu.updateUI();
+           ohjain.poistaPallot();
+           
+        }
+    }
+    
+    public void kontroller(PalloSimulaattori ohjain){
+        this.ohjain = ohjain;
+    }
+    
 }
 
