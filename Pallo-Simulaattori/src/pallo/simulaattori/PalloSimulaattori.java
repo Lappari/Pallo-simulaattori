@@ -14,27 +14,39 @@ public class PalloSimulaattori implements ActionListener{
     
     public PalloSimulaattori(){
         
+        //luodaan pääikkuna
         ikkuna = new MainRuutu();
-                
+        
+        //esitellään kontrolleri pääikkunalle
         ikkuna.kontroller(this);
+        
+        //esetetaan pääikkuna näkuväksi
         ikkuna.setVisible(true);
-        //this.piirrapallo(0,0,0,0);
-       //ikkuna.uusiPallo();
-       t.start();
+        
+        //käynnistetään timeri
+        t.start();
     }
     
+    //luo uuden pallon ruudulle
     public void piirrapallo(int x, int y, int xnop, int ynop){
         
+        //luodaan uusi pallo
         pallo = new piirrapallo(x,y,xnop,ynop);
         
+        //lisätään uusipallo listaan pallot
         pallot.add(pallo);
+        
+        //lisätään uusipallo ruudulle
         ikkuna.simu.add(pallot.get(pallot.size() - 1));
+       
     }
     
+    //poistaa kaikki pallo listasta
     public void poistaPallot(){
         pallot.clear();
     }
     
+    //päivittää jokaisen pallon timeriin asetetun ajan mukaan.
     public void actionPerformed(ActionEvent e){
         for(piirrapallo p : pallot){
            p.paivita();
