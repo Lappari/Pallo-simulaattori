@@ -1,4 +1,11 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package pallo.simulaattori;
+
+
 import java.awt.geom.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,10 +43,10 @@ public class PalloSimulaattori implements ActionListener{
     }
     
     //luo uuden pallon ruudulle
-    public void piirrapallo(float x, float y, float xnop, float ynop){
+    public void piirrapallo(float x, float y, float xnop, float ynop, float sade, float mass, float kiX, float kiY){
         
         //luodaan uusi pallo
-        pallo = new piirrapallo(x,y,xnop,ynop);
+        pallo = new piirrapallo(x,y,xnop,ynop,sade,mass,kiX,kiY);
         
         //lisätään uusipallo listaan pallot
         pallot.add(pallo);
@@ -100,4 +107,3 @@ public class PalloSimulaattori implements ActionListener{
     
  
    }
-
