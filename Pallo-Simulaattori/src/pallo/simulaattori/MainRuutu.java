@@ -112,15 +112,15 @@ public class MainRuutu extends JFrame implements ActionListener{
     //lisää pallon simulaatio JPaneeliin.
    public void uusiPallo(){
        
-       int xKordi,yKordi,Xvauhti,Yvauhti;
+       float xKordi,yKordi,Xvauhti,Yvauhti;
         
        //Hakee kordinaatit tekstikentistä.
-       xKordi = Integer.parseInt(xkordarv.getText());
-       yKordi = Integer.parseInt(ykordarv.getText());
+       xKordi = Float.parseFloat(xkordarv.getText());
+       yKordi = Float.parseFloat(ykordarv.getText());
         
         //Hakee nopeudet tekstikentistä.
-       Xvauhti = Integer.parseInt(xkordnoparv.getText());
-       Yvauhti = Integer.parseInt(ykordnoparv.getText());
+       Xvauhti = Float.parseFloat(xkordnoparv.getText());
+       Yvauhti = Float.parseFloat(ykordnoparv.getText());
        
        //lähetätään kontrollerille pallon parametrit joka luo uuden pallon piirräpalllo oliolla
        ohjain.piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti); 
