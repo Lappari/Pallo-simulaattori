@@ -69,15 +69,15 @@ public class PalloSimulaattori implements ActionListener{
            
            //Haetaan pallon muodot tarkistettaviksi
            
-           tarkPalloX = tarkpallo.GetX();
-           tarkPalloY = tarkpallo.GetY();
+           tarkPalloX = tarkpallo.GetX()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
+           tarkPalloY = tarkpallo.GetY()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
         //päivitetään pallon sijainti ja suunta ruudulle
        if(pallot.size()>1){
         for(piirrapallo muutpallot : pallot){
            //käydään läpi kaikku muuta pallot verrattuna tarkistettavaan palloon
            
-           muutPalloX = muutpallot.GetX();
-           muutPalloY = muutpallot.GetY();
+           muutPalloX = muutpallot.GetX()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
+           muutPalloY = muutpallot.GetY()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
            
            //lasketaan kahdenpallon etäisyys toisistaan
            etaisyys = (float)Math.sqrt((muutPalloX-tarkPalloX)*(muutPalloX-tarkPalloX)+(muutPalloY-tarkPalloY)*(muutPalloY-tarkPalloY));
