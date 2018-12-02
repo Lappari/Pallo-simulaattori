@@ -19,8 +19,8 @@ import java.util.Random;
 public class piirrapallo extends JPanel{
   
     //Pallon tiedot
-        private float x = 0, y = 0, kulmaX = 5, kulmaY = 5 ;
-
+        private float x = 0, y = 0, kulmaX = 5, kulmaY = 5, sade = 20 ;
+        private Ellipse2D.Float circle;
     //arvotaan pallon väri    
         Random color = new Random();
         private float red = color.nextFloat();
@@ -50,38 +50,38 @@ public class piirrapallo extends JPanel{
  
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
-        Ellipse2D circle = new Ellipse2D.Float(x,y,20,20);
+        circle = new Ellipse2D.Float(x,y,sade,sade);
         g2.setPaint(Color.getHSBColor(red, green, blue));
         g2.fill(circle);
         
     
     }
+    //getteri pallon muodon tiedoista
+    public Ellipse2D.Float getPallo(){
+        return circle;
+    }
     
-    public float getXkordinaatti(){
+    public float GetX(){
         return x;
     }
-        
-    public float getYkordinaatti(){
+    
+    public float GetY(){
         return y;
     }
     
-    public float getXnopeus(){
-        return kulmaX;
-    }
-    
-    public float getYnopeus(){
-        return kulmaY;
+    public float getSade(){
+        return sade/2;
     }
     //pallon liikkumis metodi
-    public void paivita(){
+    public void paivita(boolean tormays){
 
         //tarkistetaan onko pallo kiinni seinässä x akselin suuntaan
-        if (x < 0 || x > 779){
+        if (x < 0 || x > 779 || tormays){
             kulmaX = -kulmaX;
         }
         
         //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
-        if(y < 0 || y > 434){
+        if(y < 0 || y > 434 || tormays){
             kulmaY = -kulmaY;
         }
         
