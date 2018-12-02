@@ -16,10 +16,11 @@ import java.util.Random;
  *
  * @author Lappari
  */
+
 public class piirrapallo extends JPanel{
   
     //Pallon tiedot
-        private float x = 0, y = 0, kulmaX = 5, kulmaY = 5, sade = 20 ;
+        private float x = 0, y = 0, kulmaX = 0, kulmaY = 0,sade = 20, massa = 0, kiX= 0, kiY= 0, gravity = 9, gravityeffect;
         private Ellipse2D.Float circle;
     //arvotaan pallon väri    
         Random color = new Random();
@@ -28,13 +29,17 @@ public class piirrapallo extends JPanel{
         private float blue = color.nextFloat();
       
         
-    public piirrapallo(float uusx, float uusy, float xnopeus, float ynopeus){
+    public piirrapallo(float uusx, float uusy, float xnopeus, float ynopeus, float halk, float mass, float kiihX, float kiihY){
         
         //piirräpallo muuttuja arvojen alustus
         x = uusx;
         y = uusy;
         kulmaX = xnopeus;
         kulmaY = ynopeus;
+        massa = mass;
+        kiX = kiihX;
+        kiY = kiihY;
+        sade = halk;
         
         //asetetaan ikkunan jossa pallo voiliikkua rajat
         setBounds(0,0,799,454);
