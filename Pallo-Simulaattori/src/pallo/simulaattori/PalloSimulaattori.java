@@ -1,4 +1,5 @@
 package pallo.simulaattori;
+import java.awt.geom.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -10,10 +11,11 @@ public class PalloSimulaattori implements ActionListener{
     
     //esitellään timeri
    javax.swing.Timer t = new javax.swing.Timer(33, this);
-    
+   
    private MainRuutu ikkuna;
    private piirrapallo pallo;
-   
+   private float etaisyys,yhtsateet, tarkPalloX, tarkPalloY, muutPalloX, muutPalloY; //käytetään kahden pallo etäisyyden laskennassa
+   private boolean tormays;                                  //kahdenpallon yhteenlaskettu sade, tarvittavat kordinaatti muuttuja...
    //luodaan pallo olio lista
    ArrayList<piirrapallo>pallot = new ArrayList();
    
@@ -54,12 +56,40 @@ public class PalloSimulaattori implements ActionListener{
     
     //päivittää jokaisen pallon timeriin asetetun ajan mukaan.
     public void actionPerformed(ActionEvent e){
+      
        
+       for(piirrapallo tarkpallo: pallot){
+           
+           //Haetaan pallon muodot tarkistettaviksi
+           
+           tarkPalloX = tarkpallo.GetX();
+           tarkPalloY = tarkpallo.GetY();
         //päivitetään pallon sijainti ja suunta ruudulle
-        for(piirrapallo p : pallot){
-           //kutsutaan pallo olion päivitä metodia 
-           p.paivita();
+       if(pallot.size()>1){
+        for(piirrapallo muutpallot : pallot){
+           //käydään läpi kaikku muuta pallot verrattuna tarkistettavaan palloon
+           
+           muutPalloX = muutpallot.GetX();
+           muutPalloY = muutpallot.GetY();
+           
+           //lasketaan kahdenpallon etäisyys toisistaan
+           etaisyys = (float)Math.sqrt((muutPalloX-tarkPalloX)*(muutPalloX-tarkPalloX)+(muutPalloY-tarkPalloY)*(muutPalloY-tarkPalloY));
+           //lasketana pallojen säteiden summa
+           yhtsateet = tarkpallo.getSade()+muutpallot.getSade();
+           
+           System.out.println("tarkX:"+tarkPalloX+" Tark Y:"+tarkPalloY+" muutX:"+muutPalloX+" MuutY:"+muutPalloY+" etaisyys:"+etaisyys+" sateet:"+ yhtsateet);
+           if(etaisyys <= yhtsateet && etaisyys != 0){
+         
+            tormays = true;
+            muutpallot.paivita(tormays);
+           }else{
+            tormays = false;
+           }
+           
         }
+       }
+       tarkpallo.paivita(tormays);
+       }
     }
     
     public static void main(String[] args){
