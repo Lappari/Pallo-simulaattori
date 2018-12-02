@@ -7,11 +7,17 @@ import java.util.*;
  * @author Lappari
  */
 public class PalloSimulaattori implements ActionListener{
-   javax.swing.Timer t = new javax.swing.Timer(10, this);
-    private MainRuutu ikkuna;
-    private piirrapallo pallo;
-    ArrayList<piirrapallo>pallot = new ArrayList();
     
+    //esitellään timeri
+   javax.swing.Timer t = new javax.swing.Timer(33, this);
+    
+   private MainRuutu ikkuna;
+   private piirrapallo pallo;
+   
+   //luodaan pallo olio lista
+   ArrayList<piirrapallo>pallot = new ArrayList();
+   
+
     public PalloSimulaattori(){
         
         //luodaan pääikkuna
@@ -28,7 +34,7 @@ public class PalloSimulaattori implements ActionListener{
     }
     
     //luo uuden pallon ruudulle
-    public void piirrapallo(int x, int y, int xnop, int ynop){
+    public void piirrapallo(float x, float y, float xnop, float ynop){
         
         //luodaan uusi pallo
         pallo = new piirrapallo(x,y,xnop,ynop);
@@ -41,14 +47,17 @@ public class PalloSimulaattori implements ActionListener{
        
     }
     
-    //poistaa kaikki pallo listasta
+    //poistaa kaikki pallot listasta
     public void poistaPallot(){
         pallot.clear();
     }
     
     //päivittää jokaisen pallon timeriin asetetun ajan mukaan.
     public void actionPerformed(ActionEvent e){
+       
+        //päivitetään pallon sijainti ja suunta ruudulle
         for(piirrapallo p : pallot){
+           //kutsutaan pallo olion päivitä metodia 
            p.paivita();
         }
     }
