@@ -77,7 +77,7 @@ public class PalloSimulaattori implements ActionListener{
            //lasketana pallojen säteiden summa
            yhtsateet = tarkpallo.getSade()+muutpallot.getSade();
            
-           System.out.println("tarkX:"+tarkPalloX+" Tark Y:"+tarkPalloY+" muutX:"+muutPalloX+" MuutY:"+muutPalloY+" etaisyys:"+etaisyys+" sateet:"+ yhtsateet);
+           //tarkistetaan onko pallojen etäisyys pienempi kuin niiden yhteen lasketty sade
            if(etaisyys <= yhtsateet && etaisyys != 0){
          
             tormays = true;
