@@ -8,7 +8,7 @@ package pallo.simulaattori;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
+
 
 /**
  *
@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class MainRuutu extends JFrame implements ActionListener{
    
-    private PalloSimulaattori ohjain;
+   private PalloSimulaattori ohjain;
     private final JFrame ikkuna;
     public final JPanel simu;
     private final JLabel xkord;
@@ -33,10 +33,12 @@ public class MainRuutu extends JFrame implements ActionListener{
     private final JTextField halkaisijaan;
     private final JLabel massa;
     private final JTextField massaan;
-    private final JLabel kiihtyvyysX;
-    private final JTextField kiihtyvyyteenX;
-    private final JLabel kiihtyvyysY;
-    private final JTextField kiihtyvyyteenY;
+    private final JLabel painovoima;
+    private final JTextField painovoimaan;
+    private final JLabel kasvu;
+    private final JTextField kasvuun;
+    private final JButton G;
+    private final JLabel Gtext;
     
     public MainRuutu(){
         
@@ -59,7 +61,7 @@ public class MainRuutu extends JFrame implements ActionListener{
     xkord.setBounds(10, 10, 100, 25);
     
     //x kordinaatti text field
-    xkordarv = new JTextField("0");
+    xkordarv = new JTextField("10");
     xkordarv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     xkordarv.setBounds(108, 10, 82, 25);
     
@@ -69,7 +71,7 @@ public class MainRuutu extends JFrame implements ActionListener{
     ykord.setBounds(10, 35, 100, 25);
     
     //y kordinaatti text field
-    ykordarv = new JTextField("0");
+    ykordarv = new JTextField("10");
     ykordarv.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     ykordarv.setBounds(108, 35, 82, 25);
     
@@ -123,26 +125,34 @@ public class MainRuutu extends JFrame implements ActionListener{
     massaan.setBorder(javax.swing.BorderFactory.createEtchedBorder());
     massaan.setBounds(108, 135, 82, 25);
     
-     //kiihtyvyys X label
-    kiihtyvyysX = new JLabel("Pallon kiihtyvyys X akselilla:");
-    kiihtyvyysX.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    kiihtyvyysX.setBounds(10,160, 100 , 25);
+     //Painovoima
+    painovoima = new JLabel("Painovoima:");
+    painovoima.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    painovoima.setBounds(10,160, 100 , 25);
     
-    //kiihtyvyys X TextField
-    kiihtyvyyteenX = new JTextField("0");
-    kiihtyvyyteenX.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    kiihtyvyyteenX.setBounds(108, 160, 82, 25);
+    //Painovoima
+    painovoimaan = new JTextField("9.81");
+    painovoimaan.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    painovoimaan.setBounds(108, 160, 82, 25);
     
-     //Kiihtyvyys Y label
-    kiihtyvyysY = new JLabel("Pallon Kiihtyvyys Y akselilla:");
-    kiihtyvyysY.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    kiihtyvyysY.setBounds(10,185, 100 , 25);
+     //kasvu
+    kasvu = new JLabel("Pallon kasvu:");
+    kasvu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    kasvu.setBounds(10,185, 100 , 25);
     
-    //Kiihtyvyys Y TextField
-    kiihtyvyyteenY = new JTextField("0");
-    kiihtyvyyteenY.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-    kiihtyvyyteenY.setBounds(108, 185, 82, 25);
+    //kasvu
+    kasvuun = new JTextField("2");
+    kasvuun.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    kasvuun.setBounds(108, 185, 82, 25);
     
+    //Gravitaation vaihto nappula
+    G = new JButton("G");
+    G.addActionListener(this);
+    G.setBounds(120,410,70,25);
+    
+    Gtext = new JLabel("No Gravity");
+    Gtext.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+    Gtext.setBounds(10, 410, 110, 25);
     
     add(simu);
     add(xkordarv);
@@ -157,20 +167,22 @@ public class MainRuutu extends JFrame implements ActionListener{
     add(halkaisijaan);
     add(massa);
     add(massaan);
-    add(kiihtyvyysX);
-    add(kiihtyvyysY);
-    add(kiihtyvyyteenY);
-    add(kiihtyvyyteenX);
+    add(painovoima);
+    add(painovoimaan);
+    add(kasvu);
+    add(kasvuun);
     add(lisaaPallo);
     add(tyhjenna);
-    
+    add(G);
+    add(Gtext);
     
    }
+   
    
     //lisää pallon simulaatio JPaneeliin.
    public void uusiPallo(){
        
-       float xKordi,yKordi,Xvauhti,Yvauhti,halk,massa,mass,kiihX,kiihY;
+       float xKordi,yKordi,Xvauhti,Yvauhti,halk,massa,mass,grav,grow;
         
        //Hakee kordinaatit tekstikentistä.
        xKordi = Float.parseFloat(xkordarv.getText());
@@ -187,13 +199,28 @@ public class MainRuutu extends JFrame implements ActionListener{
        mass = Float.parseFloat(massaan.getText());
        
        //hakee kiihtyvyydet
-       kiihX = Float.parseFloat(kiihtyvyyteenX.getText());
-       kiihY = Float.parseFloat(kiihtyvyyteenY.getText());
+       grav = Float.parseFloat(painovoimaan.getText());
+       grow = Float.parseFloat(kasvuun.getText());
        
        //lähetätään kontrollerille pallon parametrit joka luo uuden pallon piirräpalllo oliolla
-       ohjain.piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti,halk,mass,kiihX,kiihY); 
+       ohjain.piirrapallo(xKordi,yKordi,Xvauhti,Yvauhti,halk,mass,grav,grow); 
        
        
+    }
+   
+   //asettaa Gtextin senhetkisen asetuksen mukaiseksi
+    public void setGtext(int textAsetus){
+        
+        switch(textAsetus){
+            case 1:Gtext.setText("No Gravity");
+                  break;
+            case 2:Gtext.setText("Dynamic Gravity");
+                  break;
+            case 3:Gtext.setText("Energy Gravity");
+                  break;
+            case 4:Gtext.setText("Bounce Gravity");
+                  break;
+        }
     }
    
    //actionPerformer napeille lisää ja tyhjennä
@@ -204,6 +231,9 @@ public class MainRuutu extends JFrame implements ActionListener{
            uusiPallo();
            
         }
+        if(e.getSource() == G){
+            ohjain.setPainovoima();
+        } 
         if(e.getSource() == tyhjenna){
             
            //tyhjentää simulaattori ikkunan
