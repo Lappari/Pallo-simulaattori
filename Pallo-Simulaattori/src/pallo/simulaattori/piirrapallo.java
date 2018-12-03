@@ -4,35 +4,33 @@
  * and open the template in the editor.
  */
 package pallo.simulaattori;
+
 import java.awt.*;
 import java.awt.geom.*;
-import java.awt.event.*;
-import static java.lang.Math.*;
-import java.util.ArrayList;
 import javax.swing.*;
 import java.util.Random;
+import static java.lang.Math.*;
+
 
 
 /**
  *
  * @author Lappari
  */
-
 public class piirrapallo extends JPanel{
   
-    //Pallon tiedot x,y sijainti kordinaattit. KulmaX, kulmaY lähtenopeudet, kiX ja kiY kiihtyvyydet,
-        private int painoAsetus=0;
-        private float x = 0, y = 0, kulmaX = 0, kulmaY = 0,sade = 20, massa = 5, kiX= 2, kiY= 2, gravityeffect,vauhti=0,kulma=0, NopeusVektori, aika = 0;
-        private float gravity =(float)9.81; 
+        //Pallon tiedot
+        private float x = 0, y = 0, kulmaX = 0, kulmaY = 0,sade = 20, massa = 0, kasvu=2, gravity = (float)9.81, gravityeffect,kulma = 0,kimmoike = 2;
         private Ellipse2D.Float circle;
-    //arvotaan pallon väri    
+        private int painoAsetus=1;
+        //arvotaan pallon väri    
         Random color = new Random();
         private float red = color.nextFloat();
         private float green = color.nextFloat();
         private float blue = color.nextFloat();
       
         
-    public piirrapallo(float uusx, float uusy, float xnopeus, float ynopeus, float halk, float mass, float kiihX, float kiihY){
+    public piirrapallo(float uusx, float uusy, float xnopeus, float ynopeus, float halk, float mass, float grav, float grow){
         
         //piirräpallo muuttuja arvojen alustus
         x = uusx;
@@ -40,8 +38,8 @@ public class piirrapallo extends JPanel{
         kulmaX = xnopeus;
         kulmaY = ynopeus;
         massa = mass;
-        kiX = kiihX;
-        kiY = kiihY;
+        gravity = grav;
+        kasvu = grow;
         sade = halk;
         
         //asetetaan ikkunan jossa pallo voiliikkua rajat
@@ -80,62 +78,120 @@ public class piirrapallo extends JPanel{
     public float getSade(){
         return sade/2;
     }
-    
-    public void setPainovoima(int asetus){
+    public void setSade(float uusisade){
+        sade = uusisade;
+    }
+    public float getKasvu(){
+        return kasvu;
+    }
+     public void setPainovoima(int asetus){
         painoAsetus=asetus;
     }
     //pallon liikkumis metodi
     public void paivita(boolean tormays){
-        //aika = (float)0.01;
         
+        switch(painoAsetus){
+            
+            case 1://Ei painovoimaa asetus
         
-        if(kulmaX<0){
-        kulma =(float)toDegrees(tanh(kulmaY/kulmaX))+180;
-        kulmaX = kulmaX*(float)cos(toRadians(kulma));
-        kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
-        }else{
-        kulma =(float)toDegrees(tanh(kulmaY/kulmaX));
-        kulmaX = kulmaX*(float)cos(toRadians(kulma));
-        kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
-        }
-        //vauhti = massa * ((float)Math.sqrt((kiX*kiX)+(kiY*kiY)));
-       // gravityeffect = gravity*massa;
+            if (x < 0 || x > 779 || tormays){
+                kulmaX = -kulmaX;
+            
+            }
         
-       
+            //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
+            if(y < 0 || y>434 || tormays){
+                kulmaY = -kulmaY;
+            }
+          
+            //liikutetaan palloa
+            x += kulmaX;
+            y += kulmaY;
+            
+            break;
         
-        // NopeusVektori = 
-        
-       /*if(kulmaX > 0 && kulmaY > 0){
-        kulmaX += kiX*0.01;
-        kulmaY += kiY*0.01;
-        }else if(kulmaX < 0 && kulmaY > 0){
-        kulmaX -= kiX*0.01;
-        kulmaY += kiY*0.01;    
-        }else if(kulmaX > 0 && kulmaY < 0){
-        kulmaX += kiX*0.01;
-        kulmaY -= kiY*0.01;    
-        }else if(kulmaX < 0 && kulmaY < 0){
-        kulmaX -= kiX*0.01;
-        kulmaY -= kiY*0.01;    
-        }*/
-        //tarkistetaan onko pallo kiinni seinässä x akselin suuntaan
-        if (x < 0 || x > 779 || tormays){
+            case 2://DYNAAMINEN painovoima
+            
+            if(kulmaX<0){
+                //laskee nopeuksien suuntakulman
+                kulma =(float)toDegrees(tanh(kulmaY/kulmaX))+180;
+                
+                //lasketaan uudet x ja y nopeudet suuntakulman ja painovoiman avulla
+                kulmaX = kulmaX*(float)cos(toRadians(kulma));
+                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
+                
+            }else{
+                //laskee nopeuksien suuntakulman
+                kulma =(float)toDegrees(tanh(kulmaY/kulmaX));
+                
+                //lasketaan uudet x ja y nopeudet suuntakulman ja painovoiman avulla
+                kulmaX = kulmaX*(float)cos(toRadians(kulma));
+                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
+            }
+            
+            //tarkistetaan onko pallo kiinni seinässä x akselin suuntaan tai törmäämässä toiseen palloo
+            if (x < 0 || x > 779 || tormays){
             kulmaX = -kulmaX;
             
-        }
+            }
         
-        //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
-        if(y < 0 || y>434 || tormays){
+            //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan tai törmäämässä toiseen palloo
+            if(y < 0 || y>434 || tormays){
             kulmaY = -kulmaY;
-        }
-        //kulmaY +=gravity*0.1;
-        //liikutetaan palloa
-        x += kulmaX;
-        y += kulmaY;
-        repaint();
-        //päivitetään pallon uusi sijainti ruudulla
+            }
+            
+            //liikutetaan palloa
+            x += kulmaX;
+            y += kulmaY;
+            
+            break;
+            
+           
+            case 3://Energy Gravity
+            gravityeffect = massa*gravity;
+            
+            
+            if (x-sade/2 < 0 || x+sade/2> 779){
+            kulmaX*=(float)0.9;
+            kulmaX = -kulmaX;
+            }
+        
+            //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
+            if(y-sade/2 < 0 || y+sade/2 > 434){
+            kulmaY*=(float)0.9;
+            kulmaY = -kulmaY;
+            }
+            x+=kulmaX*0.001;
+            y+=kulmaY+gravityeffect*0.001;
+        
+            kulmaY+=kimmoike;
+            kulmaX+=kimmoike;
+            kimmoike*=0.8;
+            
+            break;
+    
+            case 4://Bounce Gravity
+                
+            if (x < 0 || x > 779 || tormays){
+            kulmaX = -kulmaX;
+            
+            }
+        
+            //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
+            if(y < 0 || y>434 || tormays){
+            kulmaY = -kulmaY;
+            }
+          
+           //lisätää Gvoimia
+            kulmaY += gravity*0.1;
+            //liikutetaan palloa
+            x += kulmaX;
+            y += kulmaY;
+ 
+            break;
+            }
+        
+        repaint();//päivitetään pallo
 
     }
     }
-   
-
