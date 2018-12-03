@@ -5,8 +5,6 @@
  */
 package pallo.simulaattori;
 
-
-import java.awt.geom.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -21,7 +19,7 @@ public class PalloSimulaattori implements ActionListener{
    
    private MainRuutu ikkuna;
    private piirrapallo pallo;
-   private int painovoima=0;
+   private int painovoima=1;
    private float etaisyys,yhtsateet, tarkPalloX, tarkPalloY, muutPalloX, muutPalloY; //käytetään kahden pallo etäisyyden laskennassa
    private boolean tormays;                                  //kahdenpallon yhteenlaskettu sade, tarvittavat kordinaatti muuttuja...
    //luodaan pallo olio lista
@@ -61,35 +59,44 @@ public class PalloSimulaattori implements ActionListener{
     public void poistaPallot(){
         pallot.clear();
     }
-    
+    //asettaa painovoimamoodin
     public void setPainovoima(){
         painovoima++;
-        for(piirrapallo pallo: pallot){
-            pallo.setPainovoima(painovoima);
+        
+        //nollataan asetus laskuri
+        if(painovoima==5){
+            painovoima=1;
         }
-        if(painovoima==3){
-            painovoima=0;
+      
+        for(piirrapallo palloA: pallot){
+           //asetetaan olemassaoleville palloille painovoima asetus
+           palloA.setPainovoima(painovoima);    
         }
         
+        //vaihtaa Gtext tekstiä
+        ikkuna.setGtext(painovoima);
+
     }
+    
     //päivittää jokaisen pallon timeriin asetetun ajan mukaan.
     public void actionPerformed(ActionEvent e){
       
        
        for(piirrapallo tarkpallo: pallot){
            
+           //tarkistetaan että pallolla on oikea painovoima :D
+           tarkpallo.setPainovoima(painovoima);
            
-           //laskee pallon johon muidenpallojen sijaintia verrataan x ja y kordinaatin
+           
            tarkPalloX = tarkpallo.GetX()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
            tarkPalloY = tarkpallo.GetY()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
-        
-      
-        for(piirrapallo muutpallot : pallot){
+           //päivitetään pallon sijainti ja suunta ruudulle
+        if(pallot.size()>1){
+           for(piirrapallo muutpallot : pallot){
            //käydään läpi kaikku muuta pallot verrattuna tarkistettavaan palloon
            
-           //laskee verrattavanpallon keskipisteen x ja y kordinaatin
-           muutPalloX = muutpallot.GetX()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
-           muutPalloY = muutpallot.GetY()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
+            muutPalloX = muutpallot.GetX()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
+            muutPalloY = muutpallot.GetY()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
            
            //lasketaan kahdenpallon etäisyys toisistaan
            etaisyys = (float)Math.sqrt((muutPalloX-tarkPalloX)*(muutPalloX-tarkPalloX)+(muutPalloY-tarkPalloY)*(muutPalloY-tarkPalloY));
@@ -98,17 +105,17 @@ public class PalloSimulaattori implements ActionListener{
            
            //tarkistetaan onko pallojen etäisyys pienempi kuin niiden yhteen lasketty sade
            if(etaisyys <= yhtsateet && etaisyys != 0){
-            
-               //jos törmäys tapahtuu päivitetään törmätty pallo, sekä muutetaan parametriä niin että törmäävä pallo muuttaa myös suuntaansa
+               
             tormays = true;
+            float uusisade = tarkpallo.getSade()*tarkpallo.getKasvu();
+            tarkpallo.setSade(uusisade);
             muutpallot.paivita(tormays);
            }else{
             tormays = false;
            }
            
         }
-       
-       //päivitetään tarkistettava pallo
+       }
        tarkpallo.paivita(tormays);
        }
     }
