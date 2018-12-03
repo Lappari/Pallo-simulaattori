@@ -21,6 +21,7 @@ public class PalloSimulaattori implements ActionListener{
    
    private MainRuutu ikkuna;
    private piirrapallo pallo;
+   private int painovoima=0;
    private float etaisyys,yhtsateet, tarkPalloX, tarkPalloY, muutPalloX, muutPalloY; //käytetään kahden pallo etäisyyden laskennassa
    private boolean tormays;                                  //kahdenpallon yhteenlaskettu sade, tarvittavat kordinaatti muuttuja...
    //luodaan pallo olio lista
@@ -61,21 +62,32 @@ public class PalloSimulaattori implements ActionListener{
         pallot.clear();
     }
     
+    public void setPainovoima(){
+        painovoima++;
+        for(piirrapallo pallo: pallot){
+            pallo.setPainovoima(painovoima);
+        }
+        if(painovoima==3){
+            painovoima=0;
+        }
+        
+    }
     //päivittää jokaisen pallon timeriin asetetun ajan mukaan.
     public void actionPerformed(ActionEvent e){
       
        
        for(piirrapallo tarkpallo: pallot){
            
-           //Haetaan pallon muodot tarkistettaviksi
            
+           //laskee pallon johon muidenpallojen sijaintia verrataan x ja y kordinaatin
            tarkPalloX = tarkpallo.GetX()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
            tarkPalloY = tarkpallo.GetY()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
-        //päivitetään pallon sijainti ja suunta ruudulle
-       if(pallot.size()>1){
+        
+      
         for(piirrapallo muutpallot : pallot){
            //käydään läpi kaikku muuta pallot verrattuna tarkistettavaan palloon
            
+           //laskee verrattavanpallon keskipisteen x ja y kordinaatin
            muutPalloX = muutpallot.GetX()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
            muutPalloY = muutpallot.GetY()-((float)Math.sqrt((muutpallot.getSade()*muutpallot.getSade())+(muutpallot.getSade()*muutpallot.getSade())));
            
@@ -86,7 +98,8 @@ public class PalloSimulaattori implements ActionListener{
            
            //tarkistetaan onko pallojen etäisyys pienempi kuin niiden yhteen lasketty sade
            if(etaisyys <= yhtsateet && etaisyys != 0){
-         
+            
+               //jos törmäys tapahtuu päivitetään törmätty pallo, sekä muutetaan parametriä niin että törmäävä pallo muuttaa myös suuntaansa
             tormays = true;
             muutpallot.paivita(tormays);
            }else{
@@ -94,7 +107,8 @@ public class PalloSimulaattori implements ActionListener{
            }
            
         }
-       }
+       
+       //päivitetään tarkistettava pallo
        tarkpallo.paivita(tormays);
        }
     }
