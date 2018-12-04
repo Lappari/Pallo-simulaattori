@@ -90,7 +90,7 @@ public class PalloSimulaattori implements ActionListener{
            
            tarkPalloX = tarkpallo.GetX()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
            tarkPalloY = tarkpallo.GetY()-((float)Math.sqrt((tarkpallo.getSade()*tarkpallo.getSade())+(tarkpallo.getSade()*tarkpallo.getSade())));
-           //päivitetään pallon sijainti ja suunta ruudulle
+        
         if(pallot.size()>1){
            for(piirrapallo muutpallot : pallot){
            //käydään läpi kaikku muuta pallot verrattuna tarkistettavaan palloon
@@ -100,6 +100,7 @@ public class PalloSimulaattori implements ActionListener{
            
            //lasketaan kahdenpallon etäisyys toisistaan
            etaisyys = (float)Math.sqrt((muutPalloX-tarkPalloX)*(muutPalloX-tarkPalloX)+(muutPalloY-tarkPalloY)*(muutPalloY-tarkPalloY));
+           
            //lasketana pallojen säteiden summa
            yhtsateet = tarkpallo.getSade()+muutpallot.getSade();
            
@@ -107,15 +108,19 @@ public class PalloSimulaattori implements ActionListener{
            if(etaisyys <= yhtsateet && etaisyys != 0){
                
             tormays = true;
+            
+            //jos pallot törmäävät ja kasvu on yli 2
             float uusisade = tarkpallo.getSade()*tarkpallo.getKasvu();
             tarkpallo.setSade(uusisade);
             muutpallot.paivita(tormays);
+            
            }else{
             tormays = false;
            }
            
         }
        }
+       //päivitetään pallo
        tarkpallo.paivita(tormays);
        }
     }
