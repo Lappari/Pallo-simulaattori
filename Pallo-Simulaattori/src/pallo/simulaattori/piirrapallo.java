@@ -20,7 +20,7 @@ import static java.lang.Math.*;
 public class piirrapallo extends JPanel{
   
         //Pallon tiedot
-        private float x = 0, y = 0, kulmaX = 0, kulmaY = 0,sade = 20, massa = 0, kasvu=2, gravity = (float)9.81, gravityeffect,kulma = 0,kimmoike = 2;
+        private float x = 0, y = 0, kulmaX = 0, kulmaY = 0,sade = 20, massa = 0, kasvu=2, gravity = (float)9.81, gravityeffect,kulma = 0,kimmoike = 2, centerX,centerY,vauhti;
         private Ellipse2D.Float circle;
         private int painoAsetus=1;
         //arvotaan pallon väri    
@@ -111,14 +111,15 @@ public class piirrapallo extends JPanel{
             break;
         
             case 2://DYNAAMINEN painovoima
-            
-            if(kulmaX<0){
+               
+                
+           if(kulmaX<0){
                 //laskee nopeuksien suuntakulman
                 kulma =(float)toDegrees(tanh(kulmaY/kulmaX))+180;
-                
+                //vauhti =(float)Math.sqrt((kulmaX*kulmaX)+(kulmaY*kulmaY));
                 //lasketaan uudet x ja y nopeudet suuntakulman ja painovoiman avulla
                 kulmaX = kulmaX*(float)cos(toRadians(kulma));
-                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
+                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma))-gravity);
                 
             }else{
                 //laskee nopeuksien suuntakulman
@@ -126,7 +127,7 @@ public class piirrapallo extends JPanel{
                 
                 //lasketaan uudet x ja y nopeudet suuntakulman ja painovoiman avulla
                 kulmaX = kulmaX*(float)cos(toRadians(kulma));
-                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma)) - gravity);
+                kulmaY = -1*(kulmaY*(float)sin(toRadians(kulma))- gravity);
             }
             
             //tarkistetaan onko pallo kiinni seinässä x akselin suuntaan tai törmäämässä toiseen palloo
@@ -134,7 +135,7 @@ public class piirrapallo extends JPanel{
             kulmaX = -kulmaX;
             
             }
-        
+            
             //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan tai törmäämässä toiseen palloo
             if(y < 0 || y>434 || tormays){
             kulmaY = -kulmaY;
@@ -143,26 +144,26 @@ public class piirrapallo extends JPanel{
             //liikutetaan palloa
             x += kulmaX;
             y += kulmaY;
-            
+
             break;
             
            
             case 3://Energy Gravity
             gravityeffect = massa*gravity;
+            kimmoike=2;
             
-            
-            if (x-sade/2 < 0 || x+sade/2> 779){
+            if (x-sade/2 < 0 || x+sade/2> 779 || tormays){
             kulmaX*=(float)0.9;
             kulmaX = -kulmaX;
             }
         
             //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
-            if(y-sade/2 < 0 || y+sade/2 > 434){
+            if(y-sade/2 < 0 || y+sade/2 > 434 || tormays){
             kulmaY*=(float)0.9;
             kulmaY = -kulmaY;
             }
-            x+=kulmaX*0.001;
-            y+=kulmaY+gravityeffect*0.001;
+            x+=kulmaX*0.01;
+            y+=kulmaY+gravityeffect*0.01;
         
             kulmaY+=kimmoike;
             kulmaX+=kimmoike;
@@ -171,15 +172,20 @@ public class piirrapallo extends JPanel{
             break;
     
             case 4://Bounce Gravity
-                
-            if (x < 0 || x > 779 || tormays){
+            
+                //tarkka kekikohdan kordinaatti
+            centerX = x - 2/((float)Math.sqrt((sade*sade)+(sade*sade)));
+            centerY = y - 2/((float)Math.sqrt((sade*sade)+(sade*sade)));
+
+            if (centerX < 0 || centerX> 779 || tormays){
             kulmaX = -kulmaX;
             
             }
         
             //tarkistetaan onko pallo kiinni seinässä y akselin suuntaan
-            if(y < 0 || y>434 || tormays){
+            if(centerY < 0 || centerY>434 || tormays){
             kulmaY = -kulmaY;
+           
             }
           
            //lisätää Gvoimia
@@ -187,10 +193,10 @@ public class piirrapallo extends JPanel{
             //liikutetaan palloa
             x += kulmaX;
             y += kulmaY;
- 
+            
             break;
             }
-        
+
         repaint();//päivitetään pallo
 
     }
